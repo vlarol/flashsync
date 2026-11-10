@@ -1,0 +1,71 @@
+{
+  "cam01": [],
+  "cam02": [],
+  "cam05": [
+    {
+      "x": 656.9,
+      "y": 284.0,
+      "area": 8,
+      "contrast": 147.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.9,
+      "score": 0.9,
+      "accepted": true
+    },
+    {
+      "x": 1560.0,
+      "y": 442.9,
+      "area": 8,
+      "contrast": 135.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.895,
+      "score": 0.895,
+      "accepted": true
+    }
+  ],
+  "cam06": [
+    {
+      "x": 402.0,
+      "y": 148.9,
+      "area": 11,
+      "contrast": 168.0,
+      "on_fraction": 0.061,
+      "periodicity": 0.899,
+      "score": 0.899,
+      "accepted": true
+    }
+  ],
+  "cam07": [
+    {
+      "x": 668.7,
+      "y": 40.6,
+      "area": 16,
+      "contrast": 163.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.898,
+      "score": 0.898,
+      "accepted": true
+    },
+    {
+      "x": 1514.0,
+      "y": 254.0,
+      "area": 5,
+      "contrast": 114.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.896,
+      "score": 0.896,
+      "accepted": true
+    },
+    {
+      "x": 78.3,
+      "y": 83.9,
+      "area": 12,
+      "contrast": 95.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.897,
+      "score": 0.852,
+      "accepted": true
+    }
+  ],
+  "cam08": []
+}

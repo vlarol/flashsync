@@ -1,0 +1,204 @@
+{
+  "cam01": [
+    {
+      "x": 1295.4,
+      "y": 89.3,
+      "area": 112,
+      "contrast": 129.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.876,
+      "score": 0.876,
+      "accepted": true
+    },
+    {
+      "x": 762.9,
+      "y": 111.0,
+      "area": 74,
+      "contrast": 113.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.869,
+      "score": 0.869,
+      "accepted": true
+    },
+    {
+      "x": 174.9,
+      "y": 324.0,
+      "area": 182,
+      "contrast": 87.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.872,
+      "score": 0.759,
+      "accepted": true
+    }
+  ],
+  "cam02": [
+    {
+      "x": 1602.0,
+      "y": 38.0,
+      "area": 132,
+      "contrast": 150.0,
+      "on_fraction": 0.102,
+      "periodicity": 0.896,
+      "score": 0.896,
+      "accepted": true
+    },
+    {
+      "x": 338.0,
+      "y": 3.0,
+      "area": 44,
+      "contrast": 120.0,
+      "on_fraction": 0.061,
+      "periodicity": 0.895,
+      "score": 0.895,
+      "accepted": true
+    },
+    {
+      "x": 756.9,
+      "y": 230.0,
+      "area": 67,
+      "contrast": 111.0,
+      "on_fraction": 0.061,
+      "periodicity": 0.88,
+      "score": 0.88,
+      "accepted": true
+    },
+    {
+      "x": 1210.0,
+      "y": 140.0,
+      "area": 43,
+      "contrast": 107.0,
+      "on_fraction": 0.061,
+      "periodicity": 0.878,
+      "score": 0.878,
+      "accepted": true
+    }
+  ],
+  "cam05": [
+    {
+      "x": 656.9,
+      "y": 284.0,
+      "area": 191,
+      "contrast": 144.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.9,
+      "score": 0.9,
+      "accepted": true
+    },
+    {
+      "x": 1560.0,
+      "y": 442.9,
+      "area": 196,
+      "contrast": 132.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.895,
+      "score": 0.895,
+      "accepted": true
+    }
+  ],
+  "cam06": [
+    {
+      "x": 402.0,
+      "y": 148.0,
+      "area": 335,
+      "contrast": 167.0,
+      "on_fraction": 0.061,
+      "periodicity": 0.899,
+      "score": 0.899,
+      "accepted": true
+    },
+    {
+      "x": 1362.0,
+      "y": 83.0,
+      "area": 126,
+      "contrast": 77.0,
+      "on_fraction": 0.061,
+      "periodicity": 0.893,
+      "score": 0.687,
+      "accepted": true
+    }
+  ],
+  "cam07": [
+    {
+      "x": 668.7,
+      "y": 40.6,
+      "area": 127,
+      "contrast": 161.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.898,
+      "score": 0.898,
+      "accepted": true
+    },
+    {
+      "x": 1514.0,
+      "y": 254.0,
+      "area": 166,
+      "contrast": 112.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.896,
+      "score": 0.896,
+      "accepted": true
+    },
+    {
+      "x": 77.5,
+      "y": 83.2,
+      "area": 143,
+      "contrast": 92.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.897,
+      "score": 0.825,
+      "accepted": true
+    },
+    {
+      "x": 1538.0,
+      "y": 192.4,
+      "area": 37,
+      "contrast": 23.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.869,
+      "score": 0.2,
+      "accepted": true
+    }
+  ],
+  "cam08": [
+    {
+      "x": 1486.0,
+      "y": 221.0,
+      "area": 102,
+      "contrast": 107.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.901,
+      "score": 0.901,
+      "accepted": true
+    },
+    {
+      "x": 776.0,
+      "y": 53.0,
+      "area": 73,
+      "contrast": 89.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.897,
+      "score": 0.799,
+      "accepted": true
+    },
+    {
+      "x": 352.6,
+      "y": 245.3,
+      "area": 73,
+      "contrast": 61.0,
+      "on_fraction": 0.082,
+      "periodicity": 0.896,
+      "score": 0.547,
+      "accepted": true
+    },
+    {
+      "x": 1494.0,
+      "y": 161.1,
+      "area": 30,
+      "contrast": 21.0,
+      "on_fraction": 0.122,
+      "periodicity": 0.827,
+      "score": 0.174,
+      "accepted": true
+    }
+  ]
+}
