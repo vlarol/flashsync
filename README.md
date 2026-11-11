@@ -42,9 +42,9 @@ python scripts/inspect_take.py "шлях/до/Take_001"
 
 - [x] `io.py` — читання AVI, парсер `esp32_flashes.txt`, час старту камер з `ffmpeg.log`
 - [x] `led_detect.py` — автоматичний пошук LED (epoch folding + Otsu + морфологія + connected components)
-- [ ] `flash_detect.py` — моменти спалахів
+- [x] `flash_detect.py` — моменти спалахів (ковзний фон, поріг Otsu/σ, об'єднання LED, повтори кадрів)
 - [ ] `subframe.py` — уточнення через rolling shutter
-- [ ] `fit.py` — зіставлення з ESP32 і регресія offset + drift
+- [x] `fit.py` — зіставлення з ESP32 (якір MASTER) і регресія offset + drift; базові методи B0/B1/B2
 - [ ] `evaluate.py` — метрики, базові методи, графіки
 - [ ] демо до/після
 
@@ -77,4 +77,34 @@ python scripts/inspect_take.py "шлях/до/Take_001"
 python scripts/detect_leds.py <тейк> --reference results/led_detect/2Avitest_Take001/manual_leds.json --method naive
 python scripts/detect_leds.py <тейк> --reference results/led_detect/2Avitest_Take001/manual_leds.json --method folded
 ```
+
+### Спалахи і зіставлення з ESP32 (`flash_detect.py`, `fit.py`)
+
+```bash
+python scripts/run_take.py <тейк> --leds results/led_detect/2Avitest_Take001/folded/leds.json
+```
+
+Той самий тейк 2Avitest (~30 с, 27 спалахів у лозі, LED — з автодетекції, без ручної розмітки).
+Точність поки до кадру (кадр = 20 мс):
+
+| Камера | Повторів кадрів | Спалахів зіставлено | Зсув b, с | Дрейф, ppm | RMS залишків, мс |
+|---|---|---|---|---|---|
+| CAM01 | 766 (25 к/с) | 26/27 | 0.297 | +732 | 5.7 |
+| CAM02 | 0 | 26/27 | 0.865 | +188 | 4.0 |
+| CAM05 | 0 | 26/27 | 1.322 | +86 | 1.8 |
+| CAM06 | 731 (25 к/с) | 26/27 | 1.666 | +259 | 5.4 |
+| CAM07 | 1 | 26/27 | 2.251 | +1231 | 4.9 |
+| CAM08 | 708 (25 к/с) | 26/27 | 2.599 | −87 | 1.8 |
+
+![signal](results/run/2Avitest_Take001/signal_CAM01.png)
+
+MASTER-спалах (довгий, ~0.5 с) знайдено на всіх камерах. Зсуви 0.3 → 2.6 с — це послідовне
+відкриття камер DirectShow (~0.5 с на камеру). 27-й спалах у лозі — після кінця найкоротшого запису.
+
+**Обмеження точності до кадру.** На 30-секундному тейку дрейф оцінюється дуже грубо (+86…+1231 ppm):
+квантування кадром ±10 мс на 30 с дає похибку нахилу ~±700 ppm. Тест
+`test_frame_level_cannot_see_small_drift` показує те саме на синтетиці: реальний дрейф 300 ppm
+(14 мс за 48 с) менший за кадр, тож усі інтервали рівно по 50 кадрів і B2 бачить дрейф ≈ 0.
+Звідси два наступні кроки: довгий тейк (3–5 хв) і субкадрове уточнення (`subframe.py`) —
+на графіку вище видно частково засвічені кадри на фронтах спалахів, саме з них береться субкадрова інформація.
 
