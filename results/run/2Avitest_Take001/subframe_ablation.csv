@@ -1,0 +1,7 @@
+camera,flashes,irregular_dups,B2_test_rms_ms,B2_test_max_ms,B2_drift_ppm,B2+dup_test_rms_ms,B2+dup_test_max_ms,B2+dup_drift_ppm,subframe_test_rms_ms,subframe_test_max_ms,subframe_drift_ppm,subframe+dup_test_rms_ms,subframe+dup_test_max_ms,subframe+dup_drift_ppm,E_ms,R_ms,R_identifiable
+CAM01,26,1,18.42,28.61,1948.1,3.84,5.66,-338.3,20.99,32.43,2179.0,1.33,2.27,-111.1,40.0,36.0,True
+CAM02,26,0,3.82,6.09,441.2,3.82,6.09,441.2,0.78,1.58,-72.2,0.78,1.58,-72.2,17.0,20.0,True
+CAM05,26,0,3.78,5.57,332.9,3.78,5.57,332.9,0.41,0.81,-18.7,0.41,0.81,-18.7,20.0,18.0,False
+CAM06,26,0,11.44,16.84,1006.3,11.44,16.84,1006.3,3.27,4.8,299.0,3.27,4.8,299.0,40.0,36.0,False
+CAM07,26,1,15.66,18.09,332.9,3.78,5.57,332.9,19.62,21.37,-33.0,0.62,1.37,-33.0,19.0,19.0,True
+CAM08,26,0,3.84,5.66,-338.3,3.84,5.66,-338.3,2.66,3.9,-235.4,2.66,3.9,-235.4,26.0,40.0,True
