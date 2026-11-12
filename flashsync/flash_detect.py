@@ -133,3 +133,33 @@ def detect_flashes(sig: LedSignals, merge_frames: int = 5, min_leds: int = 1) ->
         group.append(p)
     close()
     return flashes
+
+
+def irregular_dups(dup: np.ndarray) -> np.ndarray:
+    """Індекси «нерегулярних» повторів кадрів.
+
+    Два різні випадки:
+    * камера віддає 25 к/с у 50-кадровий файл — повтор через кадр. Такі повтори займають
+      свій часовий слот (кадр справді показується 40 мс) і поправки не потребують;
+    * поодинокий повтор — збій захоплення: слот вставлено, а шкала камери не просунулась,
+      тож усі наступні кадри насправді на один кадр раніше. Це видно в даних як сходинка
+      залишків рівно на 1 кадр.
+    Для камер з регулярним візерунком нерегулярні — ті, що ламають чергування.
+    """
+    idx = np.where(dup)[0]
+    if len(idx) == 0:
+        return idx
+    if len(idx) > 0.3 * len(dup):                 # регулярний візерунок «через кадр»
+        gaps = np.diff(idx)
+        return idx[1:][gaps != 2]
+    return idx
+
+
+def effective_time(sig: LedSignals) -> np.ndarray:
+    """Час кадрів з поправкою на нерегулярні повтори (кожен зсуває наступні кадри на −1 кадр)."""
+    irr = irregular_dups(sig.dup)
+    shift = np.zeros(len(sig.t))
+    for i in irr:
+        shift[i:] += 1.0 / sig.fps
+    return sig.t - shift
+
