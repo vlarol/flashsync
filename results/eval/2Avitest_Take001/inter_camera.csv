@@ -1,0 +1,6 @@
+method,flashes,spread_rms_ms,spread_max_ms
+B0,13,2320.0,2320.0
+B1,13,40.0,40.0
+B2,13,33.3,43.03
+B2+dup,13,15.28,22.49
+Ours,13,5.91,8.7
