@@ -105,6 +105,7 @@ def summary_table(evals: List[CameraEval]) -> pd.DataFrame:
             r = r[np.isfinite(r)]
             row[f"{mth}_rms"] = float(np.sqrt(np.mean(r ** 2))) if len(r) else np.nan
             row[f"{mth}_max"] = float(np.abs(r).max()) if len(r) else np.nan
+            row[f"{mth}_p95"] = float(np.percentile(np.abs(r), 95)) if len(r) else np.nan
         row["Ours_drift_ppm"] = e.models["Ours"].drift_ppm
         row["B2_drift_ppm"] = e.models["B2"].drift_ppm
         row["E_ms"], row["R_ms"] = e.E * 1000, e.R * 1000
@@ -142,7 +143,7 @@ def error_vs_horizon(sig: fd.LedSignals, frame_height: int, log: pd.DataFrame,
     rows = []
     for w in train_seconds:
         frac = np.mean(m.esp_t <= t0 + w)
-        if frac < 0.1 or frac > 0.9:
+        if frac < 0.03 or frac > 0.9:
             continue
         # evaluate_camera повторює зіставлення — дешево для одного сигналу
         e = evaluate_camera(0, sig, frame_height, log, train_frac=frac)

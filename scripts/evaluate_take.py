@@ -36,20 +36,26 @@ def main():
     ap.add_argument("--run-dir", default="results/run")
     ap.add_argument("--out", default="results/eval")
     ap.add_argument("--train-frac", type=float, default=0.5)
+    ap.add_argument("--name", help="назва тейку в results/ (типово — назва папки)")
+    ap.add_argument("--height", type=int, default=1080, help="висота кадру, якщо відео немає поруч")
+    ap.add_argument("--horizon", type=float, nargs="+", default=[4, 6, 8, 10, 12],
+                    help="скільки секунд спалахів на train для графіка horizon")
     args = ap.parse_args()
 
-    take = io.load_take(args.take)
+    take = io.load_take(args.take, require_videos=False)
     log = take.flashes()
-    run = Path(args.run_dir) / take.folder.name
-    out = Path(args.out) / take.folder.name
+    name = args.name or take.folder.name
+    run = Path(args.run_dir) / name
+    out = Path(args.out) / name
+    cams = take.camera_ids or sorted(int(p.stem[-2:]) for p in run.glob("signals_CAM*.npz"))
     out.mkdir(parents=True, exist_ok=True)
 
     sigs, heights, evals = {}, {}, []
-    for cid in take.camera_ids:
+    for cid in cams:
         sigs[cid] = load_signals(run / f"signals_CAM{cid:02d}.npz")
-        heights[cid] = io.video_meta(take.videos[cid]).height
+        heights[cid] = io.video_meta(take.videos[cid]).height if cid in take.videos else args.height
         evals.append(ev.evaluate_camera(cid, sigs[cid], heights[cid], log, args.train_frac))
-    ev.add_b0(evals, ref=take.camera_ids[0])
+    ev.add_b0(evals, ref=cams[0])
 
     per = ev.summary_table(evals)
     inter = ev.inter_camera(evals)
@@ -57,14 +63,14 @@ def main():
     inter.round(2).to_csv(out / "inter_camera.csv", index=False)
 
     # ---- таблиця markdown ----
-    lines = ["| Метод | RMS відносно ESP32, мс (середнє по камерах) | Найгірший спалах, мс | Розкид між камерами RMS / max, мс |",
-             "|---|---|---|---|"]
+    lines = ["| Метод | RMS відносно ESP32, мс | 95% спалахів у межах, мс | Найгірший спалах, мс | Розкид між камерами RMS / max, мс |",
+             "|---|---|---|---|---|"]
     names = {"B0": "B0 — за номером кадру", "B1": "B1 — зсув з MASTER, без дрейфу",
              "B2": "B2 — зсув + дрейф, до кадру", "B2+dup": "B2 + поправка на повтори кадрів",
              "Ours": "**Ours — субкадрове уточнення + поправка**"}
     for m in ev.METHODS:
         i = inter[inter["method"] == m].iloc[0]
-        lines.append(f"| {names[m]} | {fmt(per[f'{m}_rms'].mean())} | {fmt(per[f'{m}_max'].max())} | "
+        lines.append(f"| {names[m]} | {fmt(per[f'{m}_rms'].mean())} | {fmt(per[f'{m}_p95'].mean())} | {fmt(per[f'{m}_max'].max())} | "
                      f"{fmt(i['spread_rms_ms'])} / {fmt(i['spread_max_ms'])} |")
     lines += ["", "| Камера | test-спалахів | " + " | ".join(ev.METHODS) + " | дрейф Ours, ppm | E, мс | R, мс |",
               "|---|---|" + "---|" * (len(ev.METHODS) + 3)]
@@ -123,8 +129,8 @@ def main():
 
     # ---- графік 4: похибка vs довжина train ----
     hor = []
-    for cid in take.camera_ids:
-        h = ev.error_vs_horizon(sigs[cid], heights[cid], log)
+    for cid in cams:
+        h = ev.error_vs_horizon(sigs[cid], heights[cid], log, train_seconds=args.horizon)
         h["camera"] = cid
         hor.append(h)
     import pandas as pd
