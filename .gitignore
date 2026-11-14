@@ -8,3 +8,5 @@ __pycache__/
 .ipynb_checkpoints/
 .venv/
 *.pyc
+results/demo/**/*.gif
+results/demo/**/*.png

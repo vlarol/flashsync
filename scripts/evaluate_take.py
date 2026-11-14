@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from flashsync import io, evaluate as ev, flash_detect as fd  # noqa: E402
+from flashsync import io, evaluate as ev, flash_detect as fd, fit, subframe as sf  # noqa: E402
 
 COLORS = {"B0": "#cbd5e1", "B1": "#94a3b8", "B2": "#64748b", "B2+dup": "#f59e0b", "Ours": "#2563eb"}
 
@@ -56,6 +56,22 @@ def main():
         heights[cid] = io.video_meta(take.videos[cid]).height if cid in take.videos else args.height
         evals.append(ev.evaluate_camera(cid, sigs[cid], heights[cid], log, args.train_frac))
     ev.add_b0(evals, ref=cams[0])
+
+    # фінальні моделі (на всіх спалахах) — для демо й експорту:
+    # момент кадру n за ESP32 = a · (t_eff[n] + R·0.5 + E/2) + b, де t_eff — час з поправкою на повтори
+    import json
+    models = {"take": str(take.folder), "reference_camera": cams[0], "cameras": {}}
+    for e in evals:
+        sig = sigs[e.camera]
+        res = sf.fit_subframe(sig, heights[e.camera], fit.match_flashes(fd.detect_flashes(sig), log))
+        models["cameras"][f"cam{e.camera:02d}"] = {
+            "fps": sig.fps, "frames": int(len(sig.t)), "a": res.model.a, "b": res.model.b,
+            "E": res.E, "R": res.R, "drift_ppm": res.model.drift_ppm,
+            "irregular_dups": [int(i) for i in fd.irregular_dups(sig.dup)],
+            "dup_frames": [int(i) for i in np.where(sig.dup)[0]],
+            "b0_offset": e.models["B0"].b,
+        }
+    (out / "sync_models.json").write_text(json.dumps(models, ensure_ascii=False, indent=2), encoding="utf-8")
 
     per = ev.summary_table(evals)
     inter = ev.inter_camera(evals)
