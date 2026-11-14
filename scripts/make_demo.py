@@ -163,7 +163,7 @@ def main():
             print(f"CAM{cid:02d}: немає моделі в {sync}, пропускаю")
             continue
         npz = Path(args.run_dir) / name / f"signals_CAM{cid:02d}.npz"
-        leds = np.load(npz)["leds"] if npz.exists() else None
+        leds = np.load(npz)["leds"] if npz.exists() else np.array(models[key].get("leds", []))
         cams.append(Camera(cid, take.videos[cid], models[key], leds))
 
     # спалах, який бачать усі камери

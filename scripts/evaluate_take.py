@@ -70,6 +70,7 @@ def main():
             "irregular_dups": [int(i) for i in fd.irregular_dups(sig.dup)],
             "dup_frames": [int(i) for i in np.where(sig.dup)[0]],
             "b0_offset": e.models["B0"].b,
+            "leds": [[round(float(x), 1), round(float(y), 1)] for x, y in sig.leds],
         }
     (out / "sync_models.json").write_text(json.dumps(models, ensure_ascii=False, indent=2), encoding="utf-8")
 
