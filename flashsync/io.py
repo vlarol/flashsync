@@ -212,7 +212,7 @@ class Take:
         return {cid: t - t0 for cid, t in sorted(res.items())}
 
 
-def load_take(folder: str | Path, pattern: str = "CAM*.avi") -> Take:
+def load_take(folder: str | Path, pattern: str = "CAM*.avi", require_videos: bool = True) -> Take:
     folder = Path(folder)
     videos: Dict[int, Path] = {}
     for p in sorted(folder.glob(pattern)):
@@ -221,7 +221,7 @@ def load_take(folder: str | Path, pattern: str = "CAM*.avi") -> Take:
         cid = camera_id(p.name)
         if cid is not None:
             videos[cid] = p
-    if not videos:
+    if not videos and require_videos:
         raise FileNotFoundError(f"{folder}: не знайдено відео за шаблоном {pattern}")
     flash = folder / "esp32_flashes.txt"
     ff = folder / "ffmpeg.log"
